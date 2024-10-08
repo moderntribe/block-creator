@@ -2,7 +2,7 @@
 <?php declare(strict_types=1);
 
 function ask( string $question, string $default = '' ): string {
-	$answer = readline( $question . ( $default ? " ($default)" : null ) . ': ' );
+	$answer = readline( $question . ( $default ? " (Default: $default)" : null ) . ': ' );
 
 	if ( ! $answer ) {
 		return $default;
@@ -28,3 +28,99 @@ function writeln( string $line ): void {
 function run( string $command ): string {
     return trim( shell_exec( $command ) ?: '' );
 }
+
+function replace_in_file( string $file, array $replacements ): void {
+    $contents = file_get_contents( $file );
+
+    file_put_contents(
+        $file,
+        str_replace(
+            array_keys( $replacements ),
+            array_values( $replacements ),
+            $contents
+        )
+    );
+}
+
+parse_str( implode( '&', array_slice( $argv, 1 ) ), $result );
+
+$namespace   = $result['namespace'] ?? ask( 'Namespace', 'tribe' );
+$block_name  = $result['block_name'] ?? ask( 'Block Name', 'example-block' );
+$block_title = $result['block_title'] ?? ask( 'Block Title', 'Example' );
+$description = $result['block_description'] ?? ask( 'Block Description', '' );
+$category    = $result['block_category'] ?? ask( 'Block Category', 'theme' );
+$path_to_dir = $result['path_to_dir'] ?? ask( 'Path to theme blocks folder', '/app/wp-content/themes/core/blocks' );
+
+$should_skip_creation = $result['should_skip_creation'] ?? '';
+
+if ( empty( $path_to_dir ) ) {
+    writeln( 'Path to blocks directory could not be empty' );
+    exit( 0 );
+}
+
+if ( empty( $block_name ) ) {
+    writeln( 'Block name could not be empty' );
+    exit( 0 );
+}
+
+if ( ! is_dir( $path_to_dir ) ) {
+    writeln( 'Could not find a path' );
+    exit( 0 );
+}
+
+if ( ! confirm( 'Start block creation from template?', true ) ) {
+    exit( 1 );
+}
+
+$block_path = $path_to_dir . '/' . $block_name;
+
+if ( ! is_dir( $block_path ) ) {
+    mkdir( $block_path, 0700 );
+} else {
+//    writeln( 'Block exists. Exit' );
+//    exit( 0 );
+}
+
+$default_package_path = '/app/vendor/moderntribe/block-creator';
+
+if ( $result['development'] ) {
+    $default_package_path = dirname( __FILE__, 2 );
+}
+
+$templates_folder = $default_package_path . '/templates';
+
+$files_to_copy = [
+    'block.json',
+    'edit.js',
+    'editor.pcss',
+    'index.js',
+    'render.php',
+    'style.pcss',
+];
+
+if ( ! empty( $should_skip_creation ) ) {
+    $should_skip_creation = explode( ',', $should_skip_creation );
+} else {
+    $should_skip_creation = [];
+}
+
+foreach ( $files_to_copy as $file_name ) {
+    if ( in_array( $file_name, $should_skip_creation ) ) {
+        continue;
+    }
+    copy( $templates_folder . '/' . $file_name, $block_path . '/' . $file_name );
+}
+
+$files = explode( PHP_EOL, run( 'grep -E -r -l -i "%BLOCK_TITLE%" "' . $block_path . '"' ) );
+$files = array_filter( $files );
+
+foreach ( $files as $file ) {
+    replace_in_file( $file, [
+        '%BLOCK_TITLE%'       => $block_title,
+        '%BLOCK_CATEGORY%'    => $category,
+        '%BLOCK_DESCRIPTION%' => $description,
+        '%BLOCK_NAME%'        => $namespace . '/' . $block_name,
+        '%BLOCK_NAMESPACE%'   => $namespace,
+    ] );
+}
+

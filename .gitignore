@@ -3,3 +3,4 @@ repo/
 vendor/
 .idea/
 /composer.lock
+/blocks
