@@ -84,11 +84,7 @@ if ( ! is_dir( $block_path ) ) {
 
 }
 
-$default_package_path = '/app/vendor/moderntribe/block-creator';
-
-if ( isset( $result['development'] ) ) {
-    $default_package_path = dirname( __FILE__, 2 );
-}
+$default_package_path = isset( $result['development'] ) ? getcwd() : getcwd() . '/vendor/moderntribe/block-creator';
 
 $templates_folder = $default_package_path . '/templates';
 
