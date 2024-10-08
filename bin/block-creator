@@ -49,7 +49,7 @@ $block_name  = $result['block_name'] ?? ask( 'Block Name', 'example-block' );
 $block_title = $result['block_title'] ?? ask( 'Block Title', 'Example' );
 $description = $result['block_description'] ?? ask( 'Block Description', '' );
 $category    = $result['block_category'] ?? ask( 'Block Category', 'theme' );
-$path_to_dir = $result['path_to_dir'] ?? ask( 'Path to theme blocks folder', '/app/wp-content/themes/core/blocks' );
+$path_to_dir = $result['path_to_dir'] ?? ask( 'Path to theme blocks folder', getcwd() . '/wp-content/themes/core/blocks' );
 
 $should_skip_creation = $result['should_skip_creation'] ?? '';
 
