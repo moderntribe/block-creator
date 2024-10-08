@@ -72,9 +72,13 @@ if ( ! confirm( 'Start block creation from template?', true ) ) {
     exit( 1 );
 }
 
-$block_path = $path_to_dir . '/' . $namespace . '/' . $block_name;
+$name_path  = $block_path = $path_to_dir . '/' . $namespace;
+$block_path = $name_path . '/' . $block_name;
 
 if ( ! is_dir( $block_path ) ) {
+    if ( ! is_dir( $name_path ) ) {
+        mkdir( $name_path, 0700 );
+    }
     mkdir( $block_path, 0700 );
 } else {
 
