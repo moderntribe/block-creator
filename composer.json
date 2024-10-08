@@ -2,17 +2,16 @@
   "name": "moderntribe/block-creator",
   "description": "Creates block sample from pre-defined template",
   "type": "library",
-  "keywords": ["dev"],
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
-  "prefer-stable": true,
   "bin": ["bin/block-creator"],
   "require": {
     "php": ">=8.0",
-    "ext-json": "*"
+    "composer/installers": "^1.0 || ^2.0"
   },
   "config": {
-    "preferred-install": "dist",
-    "sort-packages": true
+    "allow-plugins": {
+      "composer/installers": true
+    }
   }
 }
