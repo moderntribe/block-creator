@@ -1,5 +1,5 @@
 {
-  "name": "MlKilderkin/block-creator",
+  "name": "mlkilderkin/block-creator",
   "description": "Creates block sample from pre-defined template",
   "type": "library",
   "keywords": ["dev"],
