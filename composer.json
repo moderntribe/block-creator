@@ -1,0 +1,22 @@
+{
+  "name": "mlkilderkin/block-creator",
+  "description": "Creates block sample from pre-defined template",
+  "type": "library",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "MlKilderkin"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "bin": ["bin/block-creator"],
+  "require": {
+    "php": ">=8.0",
+    "ext-json": "*"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}

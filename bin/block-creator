@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+function ask( string $question, string $default = '' ): string {
+	$answer = readline( $question . ( $default ? " ($default)" : null ) . ': ' );
+
+	if ( ! $answer ) {
+		return $default;
+	}
+
+	return $answer;
+}
+
+function confirm( string $question, bool $default = false ): bool {
+	$answer = ask( $question . ' (' . ( $default ? 'Y/n' : 'y/N' ) . ')' );
+
+	if ( ! $answer ) {
+		return $default;
+	}
+
+	return strtolower( $answer ) === 'y';
+}
+
+function writeln( string $line ): void {
+    echo $line . PHP_EOL;
+}
+
+function run( string $command ): string {
+    return trim( shell_exec( $command ) ?: '' );
+}
