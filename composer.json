@@ -2,6 +2,7 @@
   "name": "mlkilderkin/block-creator",
   "description": "Creates block sample from pre-defined template",
   "type": "library",
+  "keywords": ["dev"],
   "license": "GPL-2.0-or-later",
   "authors": [
     {
