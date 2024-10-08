@@ -73,7 +73,7 @@ if ( ! confirm( 'Start block creation from template?', true ) ) {
 }
 
 $block_path = $path_to_dir . '/' . $block_name;
-
+var_dump($block_path);
 if ( ! is_dir( $block_path ) ) {
     mkdir( $block_path, 0700 );
 } else {
@@ -83,12 +83,12 @@ if ( ! is_dir( $block_path ) ) {
 
 $default_package_path = '/app/vendor/moderntribe/block-creator';
 
-if ( $result['development'] ) {
+if ( isset( $result['development'] ) ) {
     $default_package_path = dirname( __FILE__, 2 );
 }
 
 $templates_folder = $default_package_path . '/templates';
-
+var_dump($templates_folder);
 $files_to_copy = [
     'block.json',
     'edit.js',
